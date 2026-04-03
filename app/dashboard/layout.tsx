@@ -11,7 +11,6 @@ import { Sparkles, Terminal } from "lucide-react";
 import React from "react";
 
 const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
-  // Use div for the content container to ensure we don't nest main>main if SidebarInset is a main
   return (
     <SidebarProvider>
       <AppSidebar />
@@ -21,7 +20,6 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
             <SidebarTrigger className="-ml-1 text-muted-foreground hover:text-foreground transition-colors" />
             <Separator orientation="vertical" className="mr-2 h-4 bg-border" />
 
-            {/* Breadcrumb / Context Indicator */}
             <div className="flex items-center gap-2 rounded-md px-2 py-1 transition-colors hover:bg-muted/50 cursor-default">
               <div className="flex h-6 w-6 items-center justify-center rounded-md bg-primary/10 ring-1 ring-primary/20">
                 <Terminal className="h-3.5 w-3.5 text-primary" />
@@ -32,8 +30,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
             </div>
           </div>
 
-          <div className="flex items-center gap-2">
-            {/* AI Status Indicator - CodeRabbit style */}
+          {/* <div className="flex items-center gap-2">
             <div 
               className="hidden md:flex items-center gap-1.5 rounded-full bg-primary/5 px-3 py-1 text-xs font-medium text-primary ring-1 ring-primary/10 transition-all hover:bg-primary/10 hover:ring-primary/20 cursor-help" 
               title="AI Code Reviewer Active"
@@ -41,7 +38,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
               <Sparkles className="h-3.5 w-3.5" />
               <span>AI Engine Active</span>
             </div>
-          </div>
+          </div> */}
         </header>
 
         <div className="flex-1 overflow-auto relative scroll-smooth [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
