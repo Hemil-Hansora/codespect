@@ -8,6 +8,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Spinner } from "@/components/ui/spinner";
+import { ContributionGraph } from "@/features/dashboard/components/contribution-graph";
 import { useDashboard, useMonthlyActivity } from "@/features/dashboard/hooks";
 import {
   Bot,
@@ -108,11 +109,11 @@ export default function DashboardPage() {
           </CardHeader>
           <CardContent className="pl-2">
             {isMonthlyActivityLoading ? (
-              <div className="h-[350px] w-full flex items-center justify-center">
+              <div className="h-87.5 w-full flex items-center justify-center">
                 <Spinner className="text-primary" />
               </div>
             ) : (
-              <div className="h-[350px] w-full">
+              <div className="h-87.5 w-full">
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={monthlyActivity || []} margin={{ top: 20, right: 30, left: 0, bottom: 0 }}>
                     <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" opacity={0.3} vertical={false} />
