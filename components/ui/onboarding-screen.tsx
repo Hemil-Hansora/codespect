@@ -34,8 +34,6 @@ export const OnboardingScreen: React.FC<OnboardingProps> = ({
   return (
     <div className="relative flex min-h-[calc(100dvh-3rem)] w-full flex-col items-center justify-center overflow-hidden bg-background transition-colors duration-500">
       <div className="pointer-events-none absolute inset-0">
-        <div className="absolute top-10 left-10 h-24 w-24 rounded-2xl border border-border/60 bg-card/30" />
-        <div className="absolute right-14 bottom-14 h-20 w-20 rounded-full border border-border/50 bg-muted/40" />
       </div>
 
       <motion.div
@@ -128,8 +126,6 @@ export const OnboardingScreen: React.FC<OnboardingProps> = ({
         </div>
 
         <div className="relative hidden flex-1 flex-col items-center justify-center overflow-hidden rounded-[24px] border border-border bg-muted p-8 transition-colors duration-500 md:flex md:rounded-l-none md:rounded-r-[24px] md:border-l-0 lg:p-12">
-          <div className="absolute top-8 right-8 h-14 w-14 rounded-xl border border-border/70 bg-card/60" />
-          <div className="absolute bottom-8 left-8 h-16 w-16 rounded-full border border-border/70 bg-card/60" />
 
           <motion.div
             initial={{ opacity: 0, y: 10 }}
@@ -165,7 +161,7 @@ export const OnboardingScreen: React.FC<OnboardingProps> = ({
               transition={{ delay: 0.9 }}
             >
               <span className="text-base font-bold text-foreground">
-                GitHub User
+                Codespect
               </span>
               <HugeiconsIcon icon={CheckmarkBadge01Icon} size={20} className="shrink-0 text-primary" />
             </motion.div>
