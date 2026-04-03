@@ -5,8 +5,15 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1775198493349,
-      "tag": "0000_special_stellaris",
+      "when": 1775221891914,
+      "tag": "0000_clever_warlock",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1775222278186,
+      "tag": "0001_serious_rawhide_kid",
       "breakpoints": true
     }
   ]
