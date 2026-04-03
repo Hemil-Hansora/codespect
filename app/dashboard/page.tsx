@@ -8,6 +8,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Spinner } from "@/components/ui/spinner";
+import { ContributionGraph } from "@/features/dashboard/components/contribution-graph";
 import { useDashboard, useMonthlyActivity } from "@/features/dashboard/hooks";
 import {
   Bot,
