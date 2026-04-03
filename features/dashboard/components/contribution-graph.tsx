@@ -11,7 +11,7 @@ export const ContributionGraph = () => {
 
   if (isLoading) {
     return (
-      <div className="flex flex-col w-full items-center justify-center p-8 gap-3 min-h-[200px]">
+      <div className="flex flex-col w-full items-center justify-center p-8 gap-3 min-h-50">
         <Spinner className="h-6 w-6 text-primary" />
         <div className="text-sm text-muted-foreground animate-pulse">
           Loading contribution data...
@@ -22,7 +22,7 @@ export const ContributionGraph = () => {
 
   if (!data || !data.contributions.length) {
     return (
-      <div className="flex flex-col w-full items-center justify-center p-8 min-h-[200px] border border-dashed rounded-lg bg-muted/20">
+      <div className="flex flex-col w-full items-center justify-center p-8 min-h-50 border border-dashed rounded-lg bg-muted/20">
         <GitCommit className="h-10 w-10 text-muted-foreground/50 mb-2" />
         <div className="text-muted-foreground font-medium">
           No contribution data available
