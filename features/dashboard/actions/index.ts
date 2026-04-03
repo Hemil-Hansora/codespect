@@ -1,11 +1,10 @@
 "use server";
 
+import { currentUser } from "@/features/auth/actions";
+import { fetchUserCotributions, getGitHubToken } from "@/features/github";
 import db from "@/lib/db";
-import { currentUser } from "@/module/auth/actions";
-import {
-  fetchUserCotributions,
-  getGitHubToken,
-} from "@/module/github/lib/github";
+
+
 import { Octokit } from "octokit";
 import { date, number } from "zod";
 
