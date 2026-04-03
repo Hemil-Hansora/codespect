@@ -26,18 +26,18 @@ import {
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
-import { HugeiconsIcon } from "@hugeicons/react";
-import {
-  ComputerTerminal01Icon,
-  CreditCardPosIcon,
-  Github01Icon,
-  Layout03Icon,
-  Logout01Icon,
-  Robot01Icon,
-  Settings03Icon,
-  SparklesIcon,
-} from "@hugeicons/core-free-icons";
-import { LogOut, Moon, Settings, Sun } from "lucide-react";
+import { 
+  Terminal, 
+  CreditCard, 
+  Github, 
+  LayoutDashboard, 
+  LogOut, 
+  Moon, 
+  Bot, 
+  Settings, 
+  Sun,
+  Sparkles
+} from "lucide-react";
 
 export const AppSidebar = () => {
   const { theme, setTheme } = useTheme();
@@ -53,27 +53,27 @@ export const AppSidebar = () => {
     {
       title: "Dashboard",
       url: "/dashboard",
-      Icon: Layout03Icon,
+      Icon: LayoutDashboard,
     },
     {
       title: "Repositories",
       url: "/dashboard/repositories",
-      Icon: Github01Icon,
+      Icon: Github,
     },
     {
       title: "AI Reviews",
       url: "/dashboard/reviews",
-      Icon: Robot01Icon,
+      Icon: Bot,
     },
     {
       title: "Billing",
       url: "/dashboard/subscriptions",
-      Icon: CreditCardPosIcon,
+      Icon: CreditCard,
     },
     {
       title: "Settings",
       url: "/dashboard/settings",
-      Icon: Settings03Icon,
+      Icon: Settings,
     },
   ];
 
@@ -103,7 +103,7 @@ export const AppSidebar = () => {
       <SidebarHeader className="border-b border-sidebar-border/50 bg-sidebar pb-4 pt-5 transition-all duration-300 group-data-[collapsible=icon]:p-2 group-data-[collapsible=icon]:border-none">
         <div className="flex items-center gap-3 px-3 group-data-[collapsible=icon]:px-0 group-data-[collapsible=icon]:justify-center">
           <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-lg shadow-primary/20 transition-all duration-300 group-data-[collapsible=icon]:h-10 group-data-[collapsible=icon]:w-10 group-data-[collapsible=icon]:shadow-md">
-            <HugeiconsIcon icon={ComputerTerminal01Icon} className="h-6 w-6" />
+            <Terminal className="h-6 w-6" />
           </div>
           <div className="flex flex-col gap-0.5 leading-none transition-all duration-300 group-data-[collapsible=icon]:hidden">
             <span className="font-bold text-lg tracking-tight text-sidebar-foreground whitespace-nowrap">
@@ -138,7 +138,7 @@ export const AppSidebar = () => {
                     >
                       <Link href={url} className="flex items-center gap-3">
 
-            <HugeiconsIcon icon={Icon}  className={`${
+            <Icon className={`${
                             active
                               ? "text-primary-foreground"
                               : "text-muted-foreground group-hover/item:text-sidebar-accent-foreground"
@@ -159,7 +159,7 @@ export const AppSidebar = () => {
         <SidebarGroup className="mt-auto group-data-[collapsible=icon]:hidden">
           <div className="rounded-xl border border-sidebar-border bg-sidebar-accent/20 p-4 mx-2">
             <div className="flex items-center gap-2 mb-2">
-              <HugeiconsIcon icon={SparklesIcon} className="h-4 w-4 text-primary" />
+              <Sparkles className="h-4 w-4 text-primary" />
               <span className="text-sm font-semibold text-foreground">
                 Pro Plan
               </span>

@@ -2,8 +2,8 @@
 
 import { inngest } from "@/inngest/client";
 import db from "@/lib/db";
-import { getPullRequestDiff } from "@/module/github/lib/github";
-import { canCreateReview, incrementReviewCount } from "@/module/payment/lib/subscription";
+import { getPullRequestDiff } from "@/features/github";
+import { canCreateReview, incrementReviewCount } from "@/features/payment/lib/subscription";
 
 export const reviewPullRequest = async ({
   owner,

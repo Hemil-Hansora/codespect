@@ -15,8 +15,8 @@ import { Progress } from "@/components/ui/progress";
 import { Skeleton } from "@/components/ui/skeleton";
 import { checkout, customer } from "@/lib/auth-client";
 import { cn } from "@/lib/utils";
-import { syncSubscriptionStatus } from "@/module/payment/actions";
-import { useSubscription } from "@/module/payment/hooks";
+import { syncSubscriptionStatus } from "@/features/payment/actions";
+import { useSubscription } from "@/features/payment/hooks";
 import {
   Check,
   CreditCard,

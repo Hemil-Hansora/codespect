@@ -1,7 +1,7 @@
 "use server"
 
 import db from "@/lib/db"
-import { currentUser } from "@/module/auth/actions"
+import { currentUser } from "@/features/auth/actions"
 
 export const getReviews= async()=>{
     const user = await currentUser()

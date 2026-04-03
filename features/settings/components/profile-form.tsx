@@ -39,83 +39,92 @@ export const ProfileForm = () => {
   };
 
   return (
-    <Card className="border-none shadow-none bg-transparent p-0">
-      <CardHeader className="px-0 pt-0 pb-6 space-y-1">
-        <CardTitle>Profile Settings</CardTitle>
+    <Card className="border shadow-sm">
+      <CardHeader className="space-y-1">
+        <CardTitle className="text-lg">Profile Settings</CardTitle>
         <CardDescription>
           Manage your personal information and preferences.
         </CardDescription>
       </CardHeader>
 
-      <CardContent className="p-0">
-        <form onSubmit={handleSubmit}>
-          <div className="flex flex-col gap-6">
-            <div className="shrink-0 flex items-center gap-4">
-              <Avatar className="h-20 w-20 border-2 border-border shadow-sm">
-                <AvatarImage src={user?.image!} alt={name} />
-                <AvatarFallback className="bg-primary/5 text-primary text-xl font-medium">
-                  {getInitials(name)}
-                </AvatarFallback>
-              </Avatar>
+      <CardContent>
+        <form onSubmit={handleSubmit} className="space-y-6">
+          {/* Avatar Section */}
+          <div className="flex items-center gap-4 pb-4 border-b">
+            <Avatar className="h-20 w-20 border-2 border-border shadow-sm">
+              <AvatarImage src={user?.image!} alt={name} />
+              <AvatarFallback className="bg-primary/5 text-primary text-xl font-medium">
+                {getInitials(name)}
+              </AvatarFallback>
+            </Avatar>
+            <div className="flex-1 min-w-0">
+              <h3 className="font-semibold text-base truncate">{name || 'User'}</h3>
+              <p className="text-sm text-muted-foreground truncate">{email}</p>
+            </div>
+          </div>
+
+          {/* Form Fields */}
+          <div className="space-y-4">
+            <div className="space-y-2">
+              <Label
+                htmlFor="name"
+                className="text-sm font-medium"
+              >
+                Full Name
+              </Label>
+              <Input
+                id="name"
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                disabled={isUpdating || isLoading}
+                placeholder="Enter your full name"
+                className="h-10"
+              />
             </div>
 
-            <div className="flex-1 space-y-4 w-full">
-              <div className="grid gap-4">
-                <div className="space-y-1.5">
-                  <Label
-                    htmlFor="name"
-                    className="text-xs font-medium text-muted-foreground"
-                  >
-                    Full Name
-                  </Label>
-                  <Input
-                    id="name"
-                    type="text"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    disabled={isUpdating || isLoading}
-                    className="h-9 bg-background focus:ring-1"
-                  />
-                </div>
-                <div className="space-y-1.5">
-                  <Label
-                    htmlFor="email"
-                    className="text-xs font-medium text-muted-foreground"
-                  >
-                    Email Address
-                  </Label>
-                  <Input
-                    id="email"
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    disabled={isUpdating || isLoading}
-                    className="h-9 bg-background focus:ring-1"
-                  />
-                </div>
-              </div>
-
-              <div className="pt-2">
-                <Button
-                  type="submit"
-                  disabled={isUpdating || isLoading}
-                  size="sm"
-                  variant="default"
-                >
-                  {isUpdating ? (
-                    <>
-                      <Loader2 className="mr-2 h-3 w-3 animate-spin" />
-                      Saving...
-                    </>
-                  ) : (
-                    "Save Changes"
-                  )}
-                </Button>
-              </div>
+            <div className="space-y-2">
+              <Label
+                htmlFor="email"
+                className="text-sm font-medium"
+              >
+                Email Address
+              </Label>
+              <Input
+                id="email"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                disabled={isUpdating || isLoading}
+                placeholder="Enter your email"
+                className="h-10"
+              />
             </div>
           </div>
         </form>
       </CardContent>
+
+      <CardFooter className="border-t bg-muted/50">
+        <Button
+          type="submit"
+          onClick={handleSubmit}
+          disabled={isUpdating || isLoading}
+          size="default"
+          className="w-full sm:w-auto"
+        >
+          {isUpdating ? (
+            <>
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              Saving Changes...
+            </>
+          ) : (
+            <>
+              <Save className="mr-2 h-4 w-4" />
+              Save Changes
+            </>
+          )}
+        </Button>
+      </CardFooter>
     </Card>
   );
 };
