@@ -1,18 +1,19 @@
 'use client';
 
-import React from 'react';
 import { OnboardingScreen } from '@/components/ui/onboarding-screen';
+import { signIn } from '@/lib/auth-client';
 
-export default function LoginUI() {
+export const LoginUI = () => {
   const handleGithubLogin = async () => {
     try {
-      console.log('Initiating GitHub login...');
-      // TODO: Implement GitHub OAuth flow
-      // window.location.href = '/api/auth/github';
+      await signIn.social({
+        provider: "github"
+      })
     } catch (error) {
-      console.error('GitHub login error:', error);
+      console.error("GitHub login failed:", error);
     }
-  };
+  }
+  
 
   return (
     <OnboardingScreen
