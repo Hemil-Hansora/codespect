@@ -39,15 +39,15 @@ export const ProfileForm = () => {
   };
 
   return (
-    <Card className="border-none shadow-none bg-transparent p-0">
-      <CardHeader className="px-0 pt-0 pb-6 space-y-1">
+    <Card className="h-full border border-border/50 bg-card/40 p-0 shadow-sm backdrop-blur-sm">
+      <CardHeader className="pt-0 pb-6 space-y-1">
         <CardTitle>Profile Settings</CardTitle>
         <CardDescription>
           Manage your personal information and preferences.
         </CardDescription>
       </CardHeader>
 
-      <CardContent className="p-0">
+      <CardContent className="pb-6">
         <form onSubmit={handleSubmit}>
           <div className="flex flex-col gap-6">
             <div className="shrink-0 flex items-center gap-4">

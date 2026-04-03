@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
-import { useReviews } from "@/module/reviews/hooks";
+import { useReviews } from "@/features/reviews/hooks";
 import { formatDistanceToNow } from "date-fns";
 import {
   Bot,

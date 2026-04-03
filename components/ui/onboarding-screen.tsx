@@ -2,9 +2,8 @@
 
 import React from 'react';
 import { motion } from 'motion/react';
-import { CheckmarkBadge01Icon, GithubIcon } from '@hugeicons/core-free-icons';
-import { HugeiconsIcon } from '@hugeicons/react';
-import Image from 'next/image';
+import { Github, BadgeCheck } from 'lucide-react';
+import { BrandLogo } from '@/components/ui/brand-logo';
 
 interface OnboardingProps {
   title?: string;
@@ -53,9 +52,11 @@ export const OnboardingScreen: React.FC<OnboardingProps> = ({
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
             >
-              <div className="rounded-xl border border-border/70 bg-card p-3 shadow-lg">
-                <Image src="/logo.svg" alt="CodeSpect logo" width={28} height={28} className="h-7 w-7" priority />
-              </div>
+              <BrandLogo
+                withText={false}
+                className="pointer-events-none"
+                iconClassName="h-14 w-14 rounded-2xl border-border/70 shadow-lg"
+              />
             </motion.div>
 
             <motion.h1
@@ -87,7 +88,7 @@ export const OnboardingScreen: React.FC<OnboardingProps> = ({
                 whileTap={{ scale: 0.98 }}
                 className="group flex min-h-12 w-full items-center justify-center gap-3 rounded-2xl border border-primary/25 bg-primary px-6 py-3.5 text-sm font-semibold text-primary-foreground shadow-lg transition-all hover:bg-primary/90 sm:py-4"
               >
-                <HugeiconsIcon icon={GithubIcon} size={20} />
+                <Github size={20} />
                 <span>{githubButtonText}</span>
               </motion.button>
 
@@ -139,7 +140,7 @@ export const OnboardingScreen: React.FC<OnboardingProps> = ({
               whileHover={{ scale: 1.05, rotate: 5 }}
               transition={{ type: 'spring', stiffness: 300 }}
             >
-              <HugeiconsIcon icon={GithubIcon} size={36} strokeWidth={1.5} />
+              <Github size={36} strokeWidth={1.5} />
             </motion.div>
 
             <motion.div
@@ -149,9 +150,9 @@ export const OnboardingScreen: React.FC<OnboardingProps> = ({
               transition={{ delay: 0.9 }}
             >
               <span className="text-base font-bold text-foreground">
-                Codespect
+                CodeSpect
               </span>
-              <HugeiconsIcon icon={CheckmarkBadge01Icon} size={20} className="shrink-0 text-primary" />
+              <BadgeCheck size={20} className="shrink-0 text-primary" />
             </motion.div>
 
             <div className="w-full space-y-2 opacity-25">

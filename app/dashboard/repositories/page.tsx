@@ -15,14 +15,12 @@ import { Input } from "@/components/ui/input";
 import { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "sonner";
 import { useConnectRepository, useRepositoryHooks } from "@/features/repositories/hooks";
-import { HugeiconsIcon } from "@hugeicons/react";
-import { Github01Icon } from "@hugeicons/core-free-icons";
 import {
   CheckCircle2,
   ExternalLink,
+  FolderGit2,
   GitFork,
   Lock,
   RefreshCcw,
@@ -144,7 +142,7 @@ const RepositoryPage = () => {
         <div className="sticky top-0 z-20 flex flex-col gap-4 md:flex-row md:items-center md:justify-between bg-background/80 backdrop-blur-xl border-b border-border/40 py-4 px-4 md:px-6 lg:px-8">
           <div className="space-y-1.5">
             <div className="flex items-center gap-2">
-              <HugeiconsIcon icon={Github01Icon} className="size-5 text-primary" />
+              <FolderGit2 className="size-5 text-primary" />
               <h1 className="text-xl font-bold tracking-tight">Repositories</h1>
             </div>
             <p className="text-muted-foreground text-xs md:text-sm hidden md:block max-w-lg">
@@ -196,7 +194,7 @@ const RepositoryPage = () => {
     return (
       <div className="flex h-[50vh] flex-col items-center justify-center gap-4 text-center">
         <div className="rounded-full bg-destructive/10 p-4">
-          <HugeiconsIcon icon={Github01Icon} className="size-8 text-destructive" />
+          <FolderGit2 className="size-8 text-destructive" />
         </div>
         <div className="space-y-2">
           <h3 className="text-lg font-semibold">Failed to load repositories</h3>
@@ -217,7 +215,7 @@ const RepositoryPage = () => {
       <div className="sticky top-0 z-20 flex flex-col gap-4 md:flex-row md:items-center md:justify-between bg-background/80 backdrop-blur-xl border-b border-border/40 py-4 px-4 md:px-6 lg:px-8">
         <div className="space-y-1.5">
           <div className="flex items-center gap-2">
-            <HugeiconsIcon icon={Github01Icon} className="size-5 text-primary" />
+            <FolderGit2 className="size-5 text-primary" />
             <h1 className="text-xl font-bold tracking-tight">Repositories</h1>
           </div>
           <p className="text-muted-foreground text-xs md:text-sm hidden md:block max-w-lg">

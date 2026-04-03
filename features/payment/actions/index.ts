@@ -7,7 +7,7 @@ import {
   upgradeUserSubscription,
   UserLimits,
 } from "../lib/subscription";
-import { currentUser } from "@/module/auth/actions";
+import { currentUser } from "@/features/auth/actions";
 import { polarClient } from "../config/polar";
 
 export interface SubscriptionData {
