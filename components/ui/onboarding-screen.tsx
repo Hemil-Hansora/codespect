@@ -4,6 +4,7 @@ import React from 'react';
 import { motion } from 'motion/react';
 import { CheckmarkBadge01Icon, GithubIcon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
+import Image from 'next/image';
 
 interface OnboardingProps {
   title?: string;
@@ -52,21 +53,8 @@ export const OnboardingScreen: React.FC<OnboardingProps> = ({
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
             >
-              <div className="rounded-xl border border-primary/25 bg-primary p-3 shadow-lg">
-                <svg
-                  width="28"
-                  height="28"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  className="text-primary-foreground"
-                >
-                  <path
-                    d="M7 8H5C3.34315 8 2 9.34315 2 11V13C2 14.6569 3.34315 16 5 16H7M17 8H19C20.6569 8 22 9.34315 22 11V13C22 14.6569 20.6569 16 19 16H17M8 12H16"
-                    stroke="currentColor"
-                    strokeWidth="2.5"
-                    strokeLinecap="round"
-                  />
-                </svg>
+              <div className="rounded-xl border border-border/70 bg-card p-3 shadow-lg">
+                <Image src="/logo.svg" alt="CodeSpect logo" width={28} height={28} className="h-7 w-7" priority />
               </div>
             </motion.div>
 
