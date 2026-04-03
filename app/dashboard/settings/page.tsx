@@ -1,7 +1,7 @@
 "use client";
 
-import { RepositoriesList } from "@/features/settings/components/profile-form";
-import { ProfileForm } from "@/features/settings/components/repositories-list";
+import { ProfileForm } from "@/features/settings/components/profile-form";
+import { RepositoriesList } from "@/features/settings/components/repositories-list";
 import { Settings } from "lucide-react";
 
 const SettingPage = () => {
@@ -21,7 +21,7 @@ const SettingPage = () => {
 
       <div className="flex-1 flex flex-col lg:flex-row overflow-hidden">
         {/* Left Side - Profile Form */}
-        <div className="w-full lg:w-[400px] xl:w-[480px] p-6 lg:p-8 border-b lg:border-b-0 lg:border-r border-border/40 overflow-y-auto shrink-0 bg-background/50">
+        <div className="w-full lg:w-100 xl:w-120 p-6 lg:p-8 border-b lg:border-b-0 lg:border-r border-border/40 overflow-y-auto shrink-0 bg-background/50">
            <ProfileForm />
         </div>
         
