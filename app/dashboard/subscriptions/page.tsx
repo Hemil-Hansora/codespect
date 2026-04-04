@@ -30,7 +30,7 @@ import {
   Zap,
 } from "lucide-react";
 import { useSearchParams, useRouter } from "next/navigation";
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, Suspense } from "react";
 import { toast } from "sonner";
 
 const PLAN_FEATURES = {
@@ -129,10 +129,16 @@ const SubscriptionPage = () => {
         toast.promise(
           (async () => {
             // Wait a bit for webhook to be processed
-            await new Promise((resolve) => setTimeout(resolve, 1500));
+            await new Promise((resolve) => setTimeout(resolve, 2000));
             
             // Sync subscription status from Polar
-            const result = await syncMutation.mutateAsync();
+            let result = await syncMutation.mutateAsync();
+            
+            // If not active yet, retry after a longer delay (webhook might be slow)
+            if (result.success && result.status !== "ACTIVE") {
+              await new Promise((resolve) => setTimeout(resolve, 3000));
+              result = await syncMutation.mutateAsync();
+            }
             
             if (!result.success) {
               throw new Error(result.message || "Sync failed");
@@ -502,4 +508,11 @@ const SubscriptionPage = () => {
   );
 };
 
-export default SubscriptionPage;
+// Wrap with Suspense for useSearchParams support during static generation
+export default function SubscriptionPageWrapper() {
+  return (
+    <Suspense fallback={<SubscriptionSkeleton />}>
+      <SubscriptionPage />
+    </Suspense>
+  );
+}

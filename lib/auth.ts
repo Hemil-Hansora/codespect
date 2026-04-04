@@ -46,12 +46,13 @@ export const auth = betterAuth({
               slug: "CodeSpect", // Custom slug for easy reference in Checkout URL, e.g. /checkout/CodeSpect
             },
           ],
-          successUrl: process.env.POLAR_SUCCESS_URL || "/dashboard/subscriptions?success=true",
+          // Always redirect to subscriptions page with success=true for auto-sync
+          successUrl: "/dashboard/subscriptions?success=true",
           authenticatedUsersOnly: true,
         }),
         portal({
           returnUrl:
-            process.env.NEXT_PUBLIC_APP_URL ||
+            `${process.env.NEXT_PUBLIC_APP_URL}/dashboard` ||
             "http://localhost:3000/dashboard",
         }),
         usage(),
