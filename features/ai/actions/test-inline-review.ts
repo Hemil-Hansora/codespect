@@ -81,6 +81,7 @@ This is a test review to verify the inline comment feature is working correctly.
 ✅ Comments appear on the correct lines
 
 You can safely delete this test review from GitHub.`,
+      riskLevel: "minor" as const,
     };
 
     console.log("📝 Posting inline review...");

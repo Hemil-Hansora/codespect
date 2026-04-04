@@ -20,6 +20,7 @@ interface AIIssue {
 interface AIResult {
   issues: AIIssue[];
   summary: string;
+  riskLevel: "critical" | "major" | "minor" | "safe";
 }
 
 export async function postInlineReview(

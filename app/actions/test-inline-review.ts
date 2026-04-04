@@ -41,6 +41,7 @@ This is a test review to verify the inline comment feature is working.
 ✅ Comments appear on the right lines
 
 You can safely delete this test review.`,
+      riskLevel: "minor" as const,
     };
 
     const result = await postInlineReview(

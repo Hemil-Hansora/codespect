@@ -138,7 +138,8 @@ Severity contract:
         console.error("Failed to parse AI issues response:", error);
         parsedResult = {
           issues: [],
-          summary: "AI analysis completed but failed to generate structured output."
+          summary: "AI analysis completed but failed to generate structured output.",
+          riskLevel: "safe" as const,
         };
       }
 

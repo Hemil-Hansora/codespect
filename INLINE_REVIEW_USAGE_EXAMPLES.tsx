@@ -54,6 +54,7 @@ export async function exampleBasicUsage() {
       },
     ],
     summary: "Found 3 issues: 1 critical, 1 major, 1 minor. Please address the critical and major issues before merging.",
+    riskLevel: "critical" as const,
   };
 
   // Post the inline review
@@ -222,7 +223,6 @@ export async function exampleBatchReviews(
 
       results.push({
         pr: `${review.owner}/${review.repo}#${review.pull_number}`,
-        success: true,
         ...result,
       });
     } catch (error) {

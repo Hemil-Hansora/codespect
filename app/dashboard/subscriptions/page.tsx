@@ -31,7 +31,7 @@ import {
   Zap,
 } from "lucide-react";
 import { useSearchParams } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import { toast } from "sonner";
 
 const PLAN_FEATURES = {
@@ -497,4 +497,24 @@ const SubscriptionPage = () => {
   );
 };
 
-export default SubscriptionPage;
+export default function SubscriptionPageWrapper() {
+  return (
+    <Suspense fallback={<SubscriptionPageSkeleton />}>
+      <SubscriptionPage />
+    </Suspense>
+  );
+}
+
+function SubscriptionPageSkeleton() {
+  return (
+    <div className="flex min-h-[calc(100vh-4rem)] flex-col">
+      <div className="container px-4 py-6 md:py-8 flex-1">
+        <Skeleton className="h-10 w-64 mb-6" />
+        <div className="grid gap-6 md:grid-cols-2">
+          <Skeleton className="h-96 w-full" />
+          <Skeleton className="h-96 w-full" />
+        </div>
+      </div>
+    </div>
+  );
+}

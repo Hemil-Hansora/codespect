@@ -5,6 +5,16 @@ import { revalidatePath } from "next/cache";
 import { Octokit } from "octokit";
 import { currentUser } from "../auth/actions";
 import parseDiff from "parse-diff";
+import {
+  buildCommentsArray,
+  buildCommentBody,
+  buildReviewSummary,
+  sortIssuesBySeverity,
+  SEVERITY_CONFIG,
+  type AIIssue,
+  type AIResult,
+  type OctokitComment,
+} from "./committable-suggestions";
 
 export const getGitHubToken = async () => {
   const user = await currentUser();
@@ -370,20 +380,6 @@ ${review}
   });
 };
 
-interface AIIssue {
-  severity: "critical" | "major" | "minor";
-  file: string;
-  line: number;
-  title: string;
-  body: string;
-  fix?: string;
-}
-
-interface AIResult {
-  issues: AIIssue[];
-  summary: string;
-}
-
 export async function postInlineReview(
   octokit: Octokit,
   owner: string,
@@ -442,51 +438,14 @@ export async function postInlineReview(
       }
     }
 
-    // STEP 4 — Build the comments array
-    const severityBadge = {
-      critical: "⚠️ Potential issue | 🔴 Critical",
-      major: "⚠️ Potential issue | 🟠 Major",
-      minor: "💡 Suggestion | 🟡 Minor",
-    };
+    // STEP 4 — Build the comments array using committable suggestions
+    const { comments: commentsArray, skipped: skippedIssues } = buildCommentsArray(
+      aiResult.issues,
+      positionMap
+    );
 
-    const commentsArray: { path: string; position: number; body: string }[] = [];
-    const skippedIssues: AIIssue[] = [];
-
-    for (const issue of aiResult.issues) {
-      const position = positionMap[issue.file]?.[issue.line];
-
-      if (position === undefined) {
-        // Collect issues outside diff range
-        skippedIssues.push(issue);
-        continue;
-      }
-
-      // Build comment body
-      let body = `${severityBadge[issue.severity]}\n\n**${issue.title}**\n\n${issue.body}`;
-
-      if (issue.fix) {
-        body += `\n\n\`\`\`suggestion\n${issue.fix}\n\`\`\``;
-      }
-
-      commentsArray.push({
-        path: issue.file,
-        position,
-        body,
-      });
-    }
-
-    // Build summary body with CodeSpect branding
-    const summaryBody = `# 🤖 AI Code Review
-
-${aiResult.summary}
-
-${commentsArray.length > 0 ? `\n📝 **${commentsArray.length} inline comment${commentsArray.length !== 1 ? 's' : ''} posted on changed lines**` : ''}
-
----
-<div align="center">
-  <sub>Powered by <strong>Codespect</strong> • Automated Code Intelligence</sub>
-</div>
-`;
+    // Build summary body using the new buildReviewSummary function
+    const summaryBody = buildReviewSummary(aiResult);
 
     // STEP 5 — Post the review
     try {
@@ -522,19 +481,24 @@ ${commentsArray.length > 0 ? `\n📝 **${commentsArray.length} inline comment${c
       let skippedBody = `> ⚠️ **Outside diff range** — issues found in files not included in this diff\n\n`;
 
       for (const issue of skippedIssues) {
-        skippedBody += `### ${severityBadge[issue.severity]}\n`;
-        skippedBody += `**File:** \`${issue.file}\` (Line ${issue.line})\n`;
+        const config = SEVERITY_CONFIG[issue.severity];
+        
+        skippedBody += `### ${config.prefix} | ${config.badge}\n`;
+        skippedBody += `**File:** \`${issue.file}\` (Line ${issue.line}${issue.endLine ? `-${issue.endLine}` : ''})\n`;
         skippedBody += `**${issue.title}**\n\n`;
+        skippedBody += `${config.urgency}\n\n`;
         skippedBody += `${issue.body}\n\n`;
 
         if (issue.fix) {
-          skippedBody += `**Suggested fix:**\n\`\`\`\n${issue.fix}\n\`\`\`\n\n`;
+          skippedBody += `🐛 **Proposed fix**\n\`\`\`\n${issue.fix}\n\`\`\`\n\n`;
+        } else {
+          skippedBody += `ℹ️ **No autofix available**\n\n`;
         }
 
         skippedBody += `---\n\n`;
       }
 
-      skippedBody += `<div align="center">\n  <sub>Powered by <strong>Codespect</strong> • Automated Code Intelligence</sub>\n</div>`;
+      skippedBody += `<sub>CodeSpect · [Report false positive](https://github.com) · Powered by AI</sub>`;
 
       await octokit.rest.issues.createComment({
         owner,
