@@ -290,7 +290,7 @@ npx prisma migrate reset
 
 | Member | Role | GitHub |
 |--------|------|--------|
-| **Patel Vrundkumar Hirenbhai** | Full Stack Developer | [@vrund-patel](https://github.com/vrund-patel) |
+| **Patel Vrundkumar Hirenbhai** | Full Stack Developer | [@vrund-patel](https://github.com/Vrundpatel153) |
 | **Hemil Prakashbhai Hansora** | Full Stack Developer | [@hemil-hansora](https://github.com/hemil-hansora) |
 
 </div>
