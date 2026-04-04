@@ -2,6 +2,7 @@
 
 import { currentUser } from "@/features/auth/actions";
 import { createWebhook, getRepositories } from "@/features/github";
+import { canConnectRepository } from "@/features/payment/lib/subscription";
 import { inngest } from "@/inngest/client";
 import db from "@/lib/db";
 
@@ -40,13 +41,12 @@ export const connectRepository = async (
   if (!user) {
     throw new Error("Unauthorized");
   }
-  //TODO:CHECK IF USER CAN CONNECT MORE REPOS BASED ON PLAN
-  // const canConnectRepo = await canConnectRepository(user.id);
-  // if (!canConnectRepo) {
-  //   throw new Error(
-  //     "You have reached the maximum number of repositories for your plan. Please upgrade to connect more repositories.",
-  //   );
-  // }
+  const canConnectRepo = await canConnectRepository(user.id);
+  if (!canConnectRepo) {
+    throw new Error(
+      "You have reached the maximum number of repositories for your plan. Please upgrade to connect more repositories.",
+    );
+  }
   const webhook = await createWebhook(owner, repo);
 
   if (!webhook) {

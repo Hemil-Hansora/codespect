@@ -1,12 +1,19 @@
 import { embed } from "ai";
 import { google } from "@ai-sdk/google";
 import { pineconeIndex } from "@/lib/pinecone";
+import { openai } from '@ai-sdk/openai';
 
 export const generateEmbeddings = async (text: string) => {
   const { embedding } = await embed({
-    model: google.embeddingModel("text-embedding-004"),
+    model: openai.embeddingModel("text-embedding-3-small"),
     value: text,
+    providerOptions:{
+      openai:{
+        dimensions: 512
+      }
+    }
   });
+
   return embedding;
 };
 
