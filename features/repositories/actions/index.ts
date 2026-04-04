@@ -2,7 +2,7 @@
 
 import { currentUser } from "@/features/auth/actions";
 import { createWebhook, getRepositories } from "@/features/github";
-import { canConnectRepository } from "@/features/payment/lib/subscription";
+import { canConnectRepository, incrementRepositoryCount } from "@/features/payment/lib/subscription";
 import { inngest } from "@/inngest/client";
 import db from "@/lib/db";
 
@@ -63,7 +63,9 @@ export const connectRepository = async (
       url: `https://github.com/${owner}/${repo}`,
     },
   });
-  // await incrementRepositoryCount(user.id);
+  
+  // Increment the repository count for usage tracking
+  await incrementRepositoryCount(user.id);
 
   try {
     await inngest.send({

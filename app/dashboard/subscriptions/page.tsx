@@ -13,8 +13,7 @@ import {
 } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Skeleton } from "@/components/ui/skeleton";
-import { syncSubscriptionStatus } from "@/features/payment/actions";
-import { useSubscription } from "@/features/payment/hooks";
+import { useSubscription, useSyncSubscription } from "@/features/payment/hooks";
 import { checkout, customer } from "@/lib/auth-client";
 import { cn } from "@/lib/utils";
 import {
@@ -30,8 +29,8 @@ import {
   X,
   Zap,
 } from "lucide-react";
-import { useSearchParams } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
+import React, { useEffect, useState, useRef } from "react";
 import { toast } from "sonner";
 
 const PLAN_FEATURES = {
@@ -113,35 +112,48 @@ const SubscriptionSkeleton = () => (
 const SubscriptionPage = () => {
   const [checkLoading, setCheckLoading] = useState(false);
   const [portalLoading, setPortalLoading] = useState(false);
-  const [syncLoading, setSyncLoading] = useState(false);
   const searchParams = useSearchParams();
+  const router = useRouter();
   const success = searchParams.get("success");
+  const hasSynced = useRef(false);
 
   const { data, isLoading, error, refetch, isRefetching } = useSubscription();
+  const syncMutation = useSyncSubscription();
 
+  // Handle successful checkout redirect - sync subscription status
   useEffect(() => {
-    if (success === "true") {
-      const sync = async () => {
-        try {
-          // Use toast promise for better UX
-          toast.promise(
-            async () => {
-              await syncSubscriptionStatus();
-              await refetch();
-            },
-            {
-              loading: "Syncing subscription status...",
-              success: "Subscription updated successfully!",
-              error: "Failed to sync subscription.",
+    if (success === "true" && !hasSynced.current) {
+      hasSynced.current = true;
+      
+      const syncAndRefresh = async () => {
+        toast.promise(
+          (async () => {
+            // Wait a bit for webhook to be processed
+            await new Promise((resolve) => setTimeout(resolve, 1500));
+            
+            // Sync subscription status from Polar
+            const result = await syncMutation.mutateAsync();
+            
+            if (!result.success) {
+              throw new Error(result.message || "Sync failed");
             }
-          );
-        } catch (error) {
-          console.error("Error syncing subscription status:", error);
-        }
+            
+            // Clear the success param from URL to prevent re-sync on refresh
+            router.replace("/dashboard/subscriptions", { scroll: false });
+            
+            return result;
+          })(),
+          {
+            loading: "Syncing subscription status...",
+            success: "Subscription updated successfully!",
+            error: "Failed to sync subscription. Try the refresh button.",
+          }
+        );
       };
-      sync();
+      
+      syncAndRefresh();
     }
-  }, [success, refetch]);
+  }, [success, syncMutation, router]);
 
   if (error) {
     return (
@@ -179,21 +191,14 @@ const SubscriptionPage = () => {
   const isActive = data?.user?.subscriptionStatus === "ACTIVE";
 
   const handleSync = async () => {
-    try {
-      setSyncLoading(true);
-      const res = await syncSubscriptionStatus();
-      if (res.success) {
-        toast.success("Subscription status synchronized.");
-        await refetch();
-      } else {
-        toast.error("Failed to synchronize subscription.");
+    toast.promise(
+      syncMutation.mutateAsync(),
+      {
+        loading: "Syncing subscription status...",
+        success: (result) => result.message || "Subscription status synchronized.",
+        error: "Failed to synchronize subscription.",
       }
-    } catch (error) {
-      console.error("Error syncing subscription status:", error);
-      toast.error("An error occurred while syncing subscription.");
-    } finally {
-      setSyncLoading(false);
-    }
+    );
   };
 
   const handleUpgrade = async () => {
@@ -237,13 +242,13 @@ const SubscriptionPage = () => {
           </p>
         </div>
         <div className="flex items-center gap-2">
-          {isRefetching && <Loader2 className="size-4 animate-spin text-muted-foreground" />}
+          {(isRefetching || syncMutation.isPending) && <Loader2 className="size-4 animate-spin text-muted-foreground" />}
           <Button
             variant="outline"
             size="icon"
             onClick={handleSync}
-            className={cn("shrink-0 bg-background/50 text-foreground", syncLoading && "animate-spin text-primary")}
-            disabled={syncLoading}
+            className={cn("shrink-0 bg-background/50 text-foreground", syncMutation.isPending && "animate-spin text-primary")}
+            disabled={syncMutation.isPending}
             title="Sync subscription status"
           >
             <RefreshCcw className="size-4" />

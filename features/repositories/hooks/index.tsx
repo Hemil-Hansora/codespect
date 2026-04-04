@@ -3,6 +3,7 @@
 import { useInfiniteQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { connectRepository, fetchRepositories } from "../actions";
 import { toast } from "sonner";
+import { SUBSCRIPTION_QUERY_KEY } from "@/features/payment/hooks";
 
 export const useRepositoryHooks = () => {
   return useInfiniteQuery({
@@ -33,6 +34,8 @@ export const useConnectRepository = () => {
     onSuccess: () => {
       toast.success("Repository connected successfully");
       queryClient.invalidateQueries({ queryKey: ["repositories"] });
+      // Invalidate subscription data to update usage stats
+      queryClient.invalidateQueries({ queryKey: SUBSCRIPTION_QUERY_KEY });
     },
     onError: (error) => {
       toast.error("Failed to connect repository");

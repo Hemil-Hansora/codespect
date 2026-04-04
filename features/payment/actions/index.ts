@@ -47,7 +47,7 @@ export const getSubscriptionData = async (): Promise<SubscriptionData> => {
 
 export const syncSubscriptionStatus = async () => {
   const user = await currentUser();
-  console.log("Syncing subscription for user:", user);
+  console.log("Syncing subscription for user:", user?.email, "polarCustomerId:", user?.polarCustomerId);
   
   if (!user) {
     return {
@@ -67,6 +67,8 @@ export const syncSubscriptionStatus = async () => {
         email: user.email,
       });
 
+      console.log("Polar customers search result:", JSON.stringify(customers.result?.items?.map(c => ({ id: c.id, email: c.email })) || []));
+
       const existingCustomer = customers.result?.items?.[0];
       
       if (existingCustomer) {
@@ -84,12 +86,13 @@ export const syncSubscriptionStatus = async () => {
       }
     }
 
+    console.log("Fetching subscriptions for customerId:", polarCustomerId);
     const result = await polarClient.subscriptions.list({
       customerId: polarCustomerId,
     });
 
     const subscription = result.result?.items || [];
-    console.log("Found subscriptions:", subscription.length);
+    console.log("Found subscriptions:", subscription.length, subscription.map(s => ({ id: s.id, status: s.status })));
 
     const activeSubscription = subscription.find(
       (sub) => sub.status === "active",
@@ -97,7 +100,7 @@ export const syncSubscriptionStatus = async () => {
     const latestSubscription = subscription[0];
 
     if (activeSubscription) {
-      console.log("Active subscription found:", activeSubscription.id);
+      console.log("Active subscription found:", activeSubscription.id, "- upgrading to PRO");
       await upgradeUserSubscription(
         user.id,
         SubscriptionTier.PRO,
@@ -115,6 +118,7 @@ export const syncSubscriptionStatus = async () => {
           ? SubscriptionStatus.CANCELED
           : SubscriptionStatus.EXPIRED;
 
+      console.log("Latest subscription status:", latestSubscription.status, "- setting to", status);
       if (latestSubscription.status !== "active") {
         await upgradeUserSubscription(
           user.id,
@@ -129,6 +133,8 @@ export const syncSubscriptionStatus = async () => {
         status: status,
       };
     }
+    
+    console.log("No subscriptions found for customer");
     return {
       success: true,
       message: "No active subscription found. User is on free plan.",

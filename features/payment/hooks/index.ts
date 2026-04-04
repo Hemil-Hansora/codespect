@@ -1,9 +1,11 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getSubscriptionData, syncSubscriptionStatus } from "../actions";
+
+export const SUBSCRIPTION_QUERY_KEY = ["subscription-data"] as const;
 
 export const useSubscription = () => {
   return useQuery({
-    queryKey: ["subscription-data"],
+    queryKey: SUBSCRIPTION_QUERY_KEY,
     queryFn: async () => await getSubscriptionData(),
     staleTime: 1000 * 60 * 2, // 2 minutes
     gcTime: 1000 * 60 * 5, // 5 minutes cache
@@ -11,9 +13,21 @@ export const useSubscription = () => {
 };
 
 export const useSyncSubscription = () => {
-  return useQuery({
-    queryKey: ["sync-subscription"],
-    queryFn: async () => await syncSubscriptionStatus(),
-    staleTime: 0, // Always fresh for sync operations
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async () => await syncSubscriptionStatus(),
+    onSuccess: () => {
+      // Invalidate and refetch subscription data after successful sync
+      queryClient.invalidateQueries({ queryKey: SUBSCRIPTION_QUERY_KEY });
+    },
   });
+};
+
+export const useInvalidateSubscription = () => {
+  const queryClient = useQueryClient();
+
+  return () => {
+    queryClient.invalidateQueries({ queryKey: SUBSCRIPTION_QUERY_KEY });
+  };
 };

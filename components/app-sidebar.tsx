@@ -1,6 +1,7 @@
 "use client";
 
 import { useSession } from "@/lib/auth-client";
+import { useSubscription } from "@/features/payment/hooks";
 
 import { useTheme } from "next-themes";
 import { usePathname } from "next/navigation";
@@ -34,6 +35,9 @@ export const AppSidebar = () => {
   const [mounted, setMounted] = useState(false);
   const pathname = usePathname();
   const { data: session } = useSession();
+  const { data: subscriptionData } = useSubscription();
+
+  const isPro = subscriptionData?.user?.subscriptionTier === "PRO";
 
   useEffect(() => {
     setMounted(true);
@@ -149,22 +153,27 @@ export const AppSidebar = () => {
           </SidebarGroupContent>
         </SidebarGroup>
 
-        <SidebarGroup className="mt-auto group-data-[collapsible=icon]:hidden">
-          <div className="rounded-xl border border-sidebar-border bg-sidebar-accent/20 p-4 mx-2">
-            <div className="flex items-center gap-2 mb-2">
-              <Sparkles className="h-4 w-4 text-primary" />
-              <span className="text-sm font-semibold text-foreground">
-                Pro Plan
-              </span>
+        {!isPro && (
+          <SidebarGroup className="mt-auto group-data-[collapsible=icon]:hidden">
+            <div className="rounded-xl border border-sidebar-border bg-sidebar-accent/20 p-4 mx-2">
+              <div className="flex items-center gap-2 mb-2">
+                <Sparkles className="h-4 w-4 text-primary" />
+                <span className="text-sm font-semibold text-foreground">
+                  Pro Plan
+                </span>
+              </div>
+              <p className="text-xs text-muted-foreground mb-3">
+                Get unlimited AI reviews and advanced insights.
+              </p>
+              <Link 
+                href="/dashboard/subscriptions"
+                className="w-full block rounded-lg bg-primary px-3 py-2 text-xs font-medium text-primary-foreground shadow-sm hover:bg-primary/90 transition-colors text-center"
+              >
+                Upgrade Now
+              </Link>
             </div>
-            <p className="text-xs text-muted-foreground mb-3">
-              Get unlimited AI reviews and advanced insights.
-            </p>
-            <button className="w-full rounded-lg bg-primary px-3 py-2 text-xs font-medium text-primary-foreground shadow-sm hover:bg-primary/90 transition-colors">
-              Upgrade Now
-            </button>
-          </div>
-        </SidebarGroup>
+          </SidebarGroup>
+        )}
       </SidebarContent>
 
       <SidebarFooter className="border-t border-sidebar-border/50 p-2 group-data-[collapsible=icon]:p-2 group-data-[collapsible=icon]:border-t-0">

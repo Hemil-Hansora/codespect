@@ -59,11 +59,28 @@ export const auth = betterAuth({
           secret: process.env.POLAR_WEBHOOK_SECRET!,
           onSubscriptionActive: async (payload) => {
             const customerId = payload.data.customerId;
-            const user = await db.user.findUnique({
+            const customerEmail = payload.data.customer?.email;
+            
+            // Try to find user by polarCustomerId first
+            let user = await db.user.findUnique({
               where: {
                 polarCustomerId: customerId,
               },
             });
+
+            // If not found by customerId, try to find by email and update polarCustomerId
+            if (!user && customerEmail) {
+              user = await db.user.findUnique({
+                where: {
+                  email: customerEmail,
+                },
+              });
+              
+              // Update the polarCustomerId if we found the user by email
+              if (user) {
+                await updatePolarCustomerId(user.id, customerId);
+              }
+            }
 
             if (user) {
               await upgradeUserSubscription(
@@ -76,11 +93,22 @@ export const auth = betterAuth({
           },
           onSubscriptionCanceled: async (payload) => {
             const customerId = payload.data.customerId;
-            const user = await db.user.findUnique({
+            const customerEmail = payload.data.customer?.email;
+            
+            let user = await db.user.findUnique({
               where: {
                 polarCustomerId: customerId,
               },
             });
+
+            // Fallback to email lookup
+            if (!user && customerEmail) {
+              user = await db.user.findUnique({
+                where: {
+                  email: customerEmail,
+                },
+              });
+            }
 
             if (user) {
               await upgradeUserSubscription(
@@ -92,11 +120,22 @@ export const auth = betterAuth({
           },
           onSubscriptionRevoked: async (payload) => {
             const customerId = payload.data.customerId;
-            const user = await db.user.findUnique({
+            const customerEmail = payload.data.customer?.email;
+            
+            let user = await db.user.findUnique({
               where: {
                 polarCustomerId: customerId,
               },
             });
+
+            // Fallback to email lookup
+            if (!user && customerEmail) {
+              user = await db.user.findUnique({
+                where: {
+                  email: customerEmail,
+                },
+              });
+            }
 
             if (user) {
               await upgradeUserSubscription(user.id, "FREE", "EXPIRED");
