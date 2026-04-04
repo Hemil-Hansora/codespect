@@ -20,14 +20,14 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
             <SidebarTrigger className="-ml-1 text-muted-foreground hover:text-foreground transition-colors" />
             <Separator orientation="vertical" className="mr-2 h-4 bg-border" />
 
-            <div className="flex items-center gap-2 rounded-md px-2 py-1 transition-colors hover:bg-muted/50 cursor-default">
+            {/* <div className="flex items-center gap-2 rounded-md px-2 py-1 transition-colors hover:bg-muted/50 cursor-default">
               <div className="flex h-6 w-6 items-center justify-center rounded-md bg-primary/10 ring-1 ring-primary/20">
                 <Terminal className="h-3.5 w-3.5 text-primary" />
               </div>
               <h1 className="text-sm font-semibold text-foreground tracking-tight">
                 Dashboard
               </h1>
-            </div>
+            </div> */}
           </div>
 
           {/* <div className="flex items-center gap-2">

@@ -7,7 +7,8 @@ export const LoginUI = () => {
   const handleGithubLogin = async () => {
     try {
       await signIn.social({
-        provider: "github"
+        provider: "github",
+        callbackURL: "/dashboard"
       })
     } catch (error) {
       console.error("GitHub login failed:", error);

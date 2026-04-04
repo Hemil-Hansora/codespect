@@ -95,7 +95,7 @@ export const AppSidebar = () => {
           <div className="group-data-[collapsible=icon]:hidden">
             <BrandLogo
               href="/dashboard"
-              iconClassName="h-10 w-10 rounded-xl shadow-lg shadow-primary/20"
+              iconClassName="size-8 rounded-md shadow-lg shadow-primary/20"
               textClassName="text-lg text-sidebar-foreground"
             />
           </div>
@@ -103,7 +103,7 @@ export const AppSidebar = () => {
             <BrandLogo
               href="/dashboard"
               withText={false}
-              iconClassName="h-10 w-10 rounded-xl shadow-md"
+              iconClassName="size-8 rounded-xl shadow-md"
             />
           </div>
         </div>

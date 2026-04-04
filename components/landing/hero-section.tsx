@@ -1,3 +1,5 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import {
   GitPullRequest,
@@ -8,6 +10,7 @@ import {
   MessageSquare,
 } from "lucide-react";
 import Link from "next/link";
+import { useSession } from "@/lib/auth-client";
 
 const benefitChips = [
   { icon: GitPullRequest, label: "PR Comments" },
@@ -18,6 +21,8 @@ const benefitChips = [
 ];
 
 export function HeroSection() {
+  const { data: session } = useSession();
+
   return (
     <section className="relative overflow-hidden">
       {/* Background gradient */}
@@ -54,19 +59,27 @@ export function HeroSection() {
               ))}
             </div>
 
-            {/* CTAs */}
+            {/* CTAs - Show different content based on auth status */}
             <div className="mt-10 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
-              <Button size="lg" asChild className="w-full sm:w-auto shadow-lg shadow-primary/20">
-                <Link href="/login">Log in with GitHub</Link>
-              </Button>
-              <Button
-                size="lg"
-                variant="outline"
-                asChild
-                className="w-full sm:w-auto"
-              >
-                <a href="#how-it-works">See how it works</a>
-              </Button>
+              {session ? (
+                <Button size="lg" asChild className="w-full sm:w-auto shadow-lg shadow-primary/20">
+                  <Link href="/dashboard">Go to Dashboard</Link>
+                </Button>
+              ) : (
+                <>
+                  <Button size="lg" asChild className="w-full sm:w-auto shadow-lg shadow-primary/20">
+                    <Link href="/login">Log in with GitHub</Link>
+                  </Button>
+                  <Button
+                    size="lg"
+                    variant="outline"
+                    asChild
+                    className="w-full sm:w-auto"
+                  >
+                    <a href="#how-it-works">See how it works</a>
+                  </Button>
+                </>
+              )}
             </div>
           </div>
 

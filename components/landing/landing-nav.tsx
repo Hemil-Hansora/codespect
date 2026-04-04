@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Terminal, Menu, X, Moon, Sun, LogOut } from "lucide-react";
+import { Menu, X, Moon, Sun, LogOut } from "lucide-react";
 import { useTheme } from "next-themes";
 import Link from "next/link";
 import { useState, useEffect } from "react";
@@ -15,6 +15,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import Logout from "@/features/auth/components/logout";
+import { BrandLogo } from "@/components/ui/brand-logo";
 
 const navLinks = [
   { href: "#features", label: "Features" },
@@ -47,14 +48,7 @@ export function LandingNav() {
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/80 backdrop-blur-xl">
       <nav className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-2.5">
-          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-md shadow-primary/20">
-            <Terminal className="h-5 w-5" />
-          </div>
-          <span className="text-lg font-bold tracking-tight text-foreground">
-            CodeSpect
-          </span>
-        </Link>
+        <BrandLogo href="/" />
 
         {/* Desktop Navigation */}
         <div className="hidden md:flex md:items-center md:gap-8">

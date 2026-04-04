@@ -55,7 +55,7 @@ export const OnboardingScreen: React.FC<OnboardingProps> = ({
               <BrandLogo
                 withText={false}
                 className="pointer-events-none"
-                iconClassName="h-14 w-14 rounded-2xl border-border/70 shadow-lg"
+                iconClassName="h-20 w-20 rounded-2xl shadow-xl"
               />
             </motion.div>
 

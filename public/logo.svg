@@ -1,48 +1,57 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120.02 60.51">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
   <defs>
     <style>
+      .bg-square {
+        fill: #0f4229;
+      }
       .cls-1 {
-        fill: #49d23e;
+        fill: #22c55e;
         stroke-width: 0px;
       }
     </style>
   </defs>
 
-  <path
-    class="cls-1"
-    d="M37.42,59.78C21.88,54.19,8.8,44.08,0,30.68,9.89,16.69,19.7,7.83,40.16.68c-20.74,11.74-22.35,45.43-2.74,59.1Z"
-  />
-  <path
-    class="cls-1"
-    d="M120.02,30.68c-8.57,13.46-23.87,25-39.57,29.83,20.97-13.56,19.23-49.05-2.88-60.51,15.12,2.85,36.71,19.75,42.45,30.68Z"
-  />
+  <!-- Rounded square background that fills the entire viewBox -->
+  <rect class="bg-square" x="0" y="0" width="200" height="200" rx="32" ry="32"/>
 
-  <circle class="cls-1" cx="60.01" cy="30.26" r="17" />
+  <!-- Scale and center the logo content to fill more of the square -->
+  <g transform="translate(20, 60) scale(1.3)">
+    <path
+      class="cls-1"
+      d="M37.42,59.78C21.88,54.19,8.8,44.08,0,30.68,9.89,16.69,19.7,7.83,40.16.68c-20.74,11.74-22.35,45.43-2.74,59.1Z"
+    />
+    <path
+      class="cls-1"
+      d="M120.02,30.68c-8.57,13.46-23.87,25-39.57,29.83,20.97-13.56,19.23-49.05-2.88-60.51,15.12,2.85,36.71,19.75,42.45,30.68Z"
+    />
 
-  <path
-    d="M53,25.5 L48,30.26 L53,35"
-    fill="none"
-    stroke="#0d3310"
-    stroke-width="2.6"
-    stroke-linecap="round"
-    stroke-linejoin="round"
-  />
-  <path
-    d="M67,25.5 L72,30.26 L67,35"
-    fill="none"
-    stroke="#0d3310"
-    stroke-width="2.6"
-    stroke-linecap="round"
-    stroke-linejoin="round"
-  />
-  <line
-    x1="63.5"
-    y1="23.5"
-    x2="56.5"
-    y2="37"
-    stroke="#0d3310"
-    stroke-width="2.3"
-    stroke-linecap="round"
-  />
+    <circle class="cls-1" cx="60.01" cy="30.26" r="17" />
+
+    <path
+      d="M53,25.5 L48,30.26 L53,35"
+      fill="none"
+      stroke="#0f4229"
+      stroke-width="2.8"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+    <path
+      d="M67,25.5 L72,30.26 L67,35"
+      fill="none"
+      stroke="#0f4229"
+      stroke-width="2.8"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+    <line
+      x1="63.5"
+      y1="23.5"
+      x2="56.5"
+      y2="37"
+      stroke="#0f4229"
+      stroke-width="2.5"
+      stroke-linecap="round"
+    />
+  </g>
 </svg>

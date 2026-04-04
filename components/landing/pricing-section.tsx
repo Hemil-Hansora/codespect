@@ -1,3 +1,5 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -8,6 +10,7 @@ import {
 } from "@/components/ui/card";
 import { Check, Sparkles } from "lucide-react";
 import Link from "next/link";
+import { useSession } from "@/lib/auth-client";
 
 const plans = [
   {
@@ -22,7 +25,9 @@ const plans = [
       "Review history dashboard",
     ],
     cta: "Start Free",
+    ctaLoggedIn: "Go to Dashboard",
     href: "/login",
+    hrefLoggedIn: "/dashboard",
     highlight: false,
   },
   {
@@ -39,12 +44,16 @@ const plans = [
       "Priority support",
     ],
     cta: "Upgrade to Pro",
+    ctaLoggedIn: "Upgrade to Pro",
     href: "/login",
+    hrefLoggedIn: "/dashboard/subscriptions",
     highlight: true,
   },
 ];
 
 export function PricingSection() {
+  const { data: session } = useSession();
+
   return (
     <section id="pricing" className="py-20 sm:py-28">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -113,7 +122,9 @@ export function PricingSection() {
                     plan.highlight ? "shadow-lg shadow-primary/20" : ""
                   }`}
                 >
-                  <Link href={plan.href}>{plan.cta}</Link>
+                  <Link href={session ? plan.hrefLoggedIn : plan.href}>
+                    {session ? plan.ctaLoggedIn : plan.cta}
+                  </Link>
                 </Button>
               </CardContent>
             </Card>
