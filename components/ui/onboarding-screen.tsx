@@ -156,8 +156,6 @@ export const OnboardingScreen: React.FC<OnboardingProps> = ({
             </motion.div>
 
             <div className="w-full space-y-2 opacity-25">
-              <div className="h-2 w-full rounded-full bg-foreground" />
-              <div className="mx-auto h-2 w-2/3 rounded-full bg-foreground" />
             </div>
           </motion.div>
 
