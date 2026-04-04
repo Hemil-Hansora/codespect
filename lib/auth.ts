@@ -1,4 +1,6 @@
-import { betterAuth } from "better-auth"
+import { betterAuth } from "better-auth";
+import { prismaAdapter } from "better-auth/adapters/prisma";
+import db from "./db";
 import {
   checkout,
   polar,
@@ -6,28 +8,36 @@ import {
   usage,
   webhooks,
 } from "@polar-sh/better-auth";
-import { prismaAdapter } from "better-auth/adapters/prisma";
-import db from "./db";
+import { polarClient, polarDiagnostics } from "@/features/payment/config/polar";
 import { updatePolarCustomerId, upgradeUserSubscription } from "@/features/payment/lib/subscription";
-import { polarClient } from "@/features/payment/config/polar";
+
 // If your Prisma file is located elsewhere, you can change the path
 
 export const auth = betterAuth({
-    database: prismaAdapter(db , {
-        provider: "sqlite", // or "mysql", "postgresql", ...etc
-    }),
-    socialProviders :{
-        github:{
-            clientId: process.env.GITHUB_CLIENT_ID!,
-            clientSecret: process.env.GITHUB_CLIENT_SECRET!,
-            scope:["repo" ]
-        }
+  database: prismaAdapter(db, {
+    provider: "postgresql", // or "mysql", "postgresql", ...etc
+  }),
+  socialProviders: {
+    github: {
+      clientId: process.env.GITHUB_CLIENT_ID!,
+      clientSecret: process.env.GITHUB_CLIENT_SECRET!,
+      scope: ["repo"],
     },
-     trustedOrigins:["http://localhost:3000", process.env.NEXT_PUBLIC_APP_URL!],
+  },
+  trustedOrigins:["http://localhost:3000", process.env.NEXT_PUBLIC_APP_URL!],
   plugins: [
     polar({
       client: polarClient,
       createCustomerOnSignUp: true,
+      getCustomerCreateParams: async ({ user }) => {
+        if (process.env.NODE_ENV !== "production") {
+          console.error(
+            `[Polar] signup customer create email=${user.email ?? "unknown"} server=${polarDiagnostics.server} token=${polarDiagnostics.tokenFingerprint}`,
+          );
+        }
+
+        return {};
+      },
       use: [
         checkout({
           products: [

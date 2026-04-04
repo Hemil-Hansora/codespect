@@ -13,10 +13,10 @@ import {
 } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Skeleton } from "@/components/ui/skeleton";
-import { checkout, customer } from "@/lib/auth-client";
-import { cn } from "@/lib/utils";
 import { syncSubscriptionStatus } from "@/features/payment/actions";
 import { useSubscription } from "@/features/payment/hooks";
+import { checkout, customer } from "@/lib/auth-client";
+import { cn } from "@/lib/utils";
 import {
   Check,
   CreditCard,
@@ -31,7 +31,7 @@ import {
   Zap,
 } from "lucide-react";
 import { useSearchParams } from "next/navigation";
-import React, { Suspense, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
 
 const PLAN_FEATURES = {
@@ -252,7 +252,7 @@ const SubscriptionPage = () => {
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8 space-y-8 max-w-[1600px] mx-auto w-full [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+      <div className="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8 space-y-8 max-w-400 mx-auto w-full [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
         {isLoading ? (
           <SubscriptionSkeleton />
         ) : (
@@ -497,24 +497,4 @@ const SubscriptionPage = () => {
   );
 };
 
-export default function SubscriptionPageWrapper() {
-  return (
-    <Suspense fallback={<SubscriptionPageSkeleton />}>
-      <SubscriptionPage />
-    </Suspense>
-  );
-}
-
-function SubscriptionPageSkeleton() {
-  return (
-    <div className="flex min-h-[calc(100vh-4rem)] flex-col">
-      <div className="container px-4 py-6 md:py-8 flex-1">
-        <Skeleton className="h-10 w-64 mb-6" />
-        <div className="grid gap-6 md:grid-cols-2">
-          <Skeleton className="h-96 w-full" />
-          <Skeleton className="h-96 w-full" />
-        </div>
-      </div>
-    </div>
-  );
-}
+export default SubscriptionPage;
