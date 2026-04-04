@@ -10,6 +10,7 @@ export const generateReview = inngest.createFunction(
   {
     id: "generate-review",
     concurrency: 5,
+    retries: 2,
   },
   {
     event: "pr.review.requested",
@@ -44,12 +45,22 @@ export const generateReview = inngest.createFunction(
 
     const context = await step.run("retrieve-context", async () => {
       const query = `${title}\n${description}`;
-        
-      return await retrieveContent({ query, repoId: `${owner}/${repoName}` });
+      
+      try {
+        return await retrieveContent({ query, repoId: `${owner}/${repoName}` });
+      } catch (error) {
+        console.error("Failed to retrieve context from Pinecone:", error);
+        // Return empty context if retrieval fails - review can still proceed
+        return [];
+      }
     });
 
     // Generate structured review with inline issues
     const { review, aiResult } = await step.run("generate-review", async () => {
+      const contextText = context && context.length > 0 
+        ? context.join("\n\n") 
+        : "No codebase context available.";
+      
       // First, generate structured issues for inline comments
       const issuesPrompt = `You are a principal engineer doing a final production review. Your output feeds directly into a GitHub PR review API — precision is mandatory.
 
@@ -57,7 +68,7 @@ PR Title: ${title}
 PR Description: ${description || "No description provided"}
 
 Codebase Context:
-${context.join("\n\n")}
+${contextText}
 
 Diff:
 \`\`\`diff
